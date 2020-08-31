@@ -3,11 +3,13 @@ package app
 import (
 	"context"
 	"fmt"
+	"github.com/dnahurnyi/uploader/portDomain/app/contracts"
 	pb "github.com/dnahurnyi/uploader/portDomain/proto/github.com/dnahurnyi/uploader/portDomain"
 	"io"
 )
 
 type Server struct {
+	DB contracts.PortRepository
 }
 
 func (s *Server) LoadPorts(stream pb.PortDomain_LoadPortsServer) error {
