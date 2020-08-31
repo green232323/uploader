@@ -1,0 +1,34 @@
+version: '3.1'
+
+services:
+  port-domain:
+    build: ./portDomain
+    depends_on:
+      - mongodb
+    expose:
+      - "9000"
+    links:
+      - mongodb
+    environment:
+      - DB_URL=mongodb://mongodb:27017
+      - PORT=9000
+
+  client-api:
+    build: ./clientAPI
+    depends_on:
+      - port-domain
+    links:
+      - port-domain
+    environment:
+      - PORT_DOMAIN_URL=port-domain:9000
+      - PORT=8090
+    ports:
+      - "8090:8090"
+
+  mongodb:
+    image: mongo
+    expose:
+      - "27017"
+    volumes:
+      - ./data:/data/db
+    command: --quiet

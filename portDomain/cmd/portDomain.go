@@ -6,6 +6,7 @@ import (
 	"github.com/dnahurnyi/uploader/portDomain/app/storage"
 	"log"
 	"net"
+	"os"
 	"time"
 
 	pb "github.com/dnahurnyi/uploader/portDomain/proto/github.com/dnahurnyi/uploader/portDomain"
@@ -13,8 +14,18 @@ import (
 	"google.golang.org/grpc"
 )
 
+const (
+	dbURL = "DB_URL"
+	port  = "PORT"
+)
+
 func main() {
-	lis, err := net.Listen("tcp", ":9000")
+	ownPort := os.Getenv(port)
+	if len(ownPort) == 0 {
+		log.Fatalf("failed to get own port from env")
+	}
+
+	lis, err := net.Listen("tcp", ":"+ownPort)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -22,7 +33,12 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	portRepo, err := storage.NewMongoRepository(ctx, "mongodb://localhost:27017")
+	databaseURL := os.Getenv(dbURL)
+	if len(databaseURL) == 0 {
+		log.Fatalf("failed to get database credentials from env")
+	}
+
+	portRepo, err := storage.NewMongoRepository(ctx, databaseURL)
 	if err != nil {
 		log.Fatalf("failed to connect to database, err: %v", err)
 	}

@@ -12,8 +12,23 @@ import (
 	"github.com/rs/zerolog"
 )
 
+const (
+	portDomainURL = "PORT_DOMAIN_URL"
+	port          = "PORT"
+)
+
 func main() {
-	deliveryClient, err := delivery.PortDomainClient(":9000")
+	ownPort := os.Getenv(port)
+	if len(ownPort) == 0 {
+		log.Fatal("can't get own port from env")
+	}
+
+	pdURL := os.Getenv(portDomainURL)
+	if len(pdURL) == 0 {
+		log.Fatal("Can't get port domain credentials from env")
+	}
+
+	deliveryClient, err := delivery.PortDomainClient(pdURL)
 	if err != nil {
 		log.Fatal("Cant connect to PortDomainService")
 	}
@@ -25,5 +40,5 @@ func main() {
 	}
 	http.HandleFunc("/ports/", portHandler.Handle)
 	fmt.Println("service started")
-	http.ListenAndServe(":8090", nil)
+	http.ListenAndServe(":"+ownPort, nil)
 }
