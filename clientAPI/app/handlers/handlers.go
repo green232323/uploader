@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/dnahurnyi/uploader/clientAPI/app/contracts"
 	"net/http"
 	"strings"
 
@@ -8,7 +9,8 @@ import (
 )
 
 type PortsHandler struct {
-	Log zerolog.Logger
+	Log    zerolog.Logger
+	Parser contracts.Parser
 }
 
 func (h *PortsHandler) Handle(w http.ResponseWriter, req *http.Request) {
