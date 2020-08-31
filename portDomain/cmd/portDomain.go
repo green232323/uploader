@@ -22,7 +22,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	portRepo, err := storage.NewMongoRepository(ctx, "mongo://localhost:27017")
+	portRepo, err := storage.NewMongoRepository(ctx, "mongodb://localhost:27017")
 	if err != nil {
 		log.Fatalf("failed to connect to database, err: %v", err)
 	}
