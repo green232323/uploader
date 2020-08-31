@@ -22,11 +22,14 @@ func (s *Server) LoadPorts(stream pb.PortDomain_LoadPortsServer) error {
 			fmt.Printf("client died, err: %v\n", err)
 			return err
 		}
-		fmt.Println("Got port: ", port)
+		err = s.DB.SaveOrUpdate(port.GetKey(), port)
+		if err != nil {
+			fmt.Printf("failed to save or update entity in database, err: %v\n", err)
+			return err
+		}
 	}
 }
 
 func (s *Server) GetPortByID(ctx context.Context, portID *pb.PortID) (*pb.Port, error) {
-	fmt.Println("Return port by id: ", portID)
-	return nil, nil
+	return s.DB.Get(ctx, portID.Key)
 }
