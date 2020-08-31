@@ -23,5 +23,5 @@ message Empty {}
 
 service PortDomain {
     rpc LoadPorts(stream Port) returns (Empty) {}
-    rpc Get(PortID) returns (Port) {}
+    rpc GetPortByID(PortID) returns (Port) {}
 }

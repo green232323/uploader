@@ -105,8 +105,13 @@ func (h *PortsHandler) loadPorts(w http.ResponseWriter, req *http.Request) {
 
 func (h *PortsHandler) getPort(w http.ResponseWriter, req *http.Request) {
 	id := strings.TrimPrefix(req.URL.Path, "/ports/")
-
+	storable, err := h.DomainClient.Get(req.Context(), id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(fmt.Sprintf("can't get port record. Err: %v", err)))
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
-	w.Write([]byte("Not implemented, got id: " + id))
+	w.Write(storable.Present())
 }

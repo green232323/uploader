@@ -67,7 +67,7 @@ func (pd *portDomain) Send(ctx context.Context) (func(contracts.Storable, bool) 
 }
 
 func (pd *portDomain) Get(ctx context.Context, key string) (contracts.Storable, error) {
-	port, err := pd.client.Get(ctx, &pb.PortID{
+	port, err := pd.client.GetPortByID(ctx, &pb.PortID{
 		Key: key,
 	})
 	if err != nil {

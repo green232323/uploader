@@ -26,7 +26,7 @@ func (s *Server) LoadPorts(stream pb.PortDomain_LoadPortsServer) error {
 	}
 }
 
-func (s *Server) Get(ctx context.Context, portID *pb.PortID) (*pb.Port, error) {
+func (s *Server) GetPortByID(ctx context.Context, portID *pb.PortID) (*pb.Port, error) {
 	fmt.Println("Return port by id: ", portID)
 	return nil, nil
 }
