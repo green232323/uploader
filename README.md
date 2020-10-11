@@ -31,3 +31,6 @@ To run the application, run in terminal next command:
 To run tests, run in terminal next command:
 ```./tests.sh```
 
+
+
+
